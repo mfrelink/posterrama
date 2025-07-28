@@ -2725,6 +2725,32 @@ app.get('/api/health', asyncHandler(async (req, res) => {
 
 /**
  * @swagger
+ * /health/detailed:
+ *   get:
+ *     summary: Detailed Health Check (Alternative endpoint)
+ *     description: >
+ *       Alternative endpoint for comprehensive health check that validates configuration, 
+ *       filesystem access, media cache status, and connectivity to configured media servers. 
+ *       This endpoint provides the same functionality as /api/health but is available at 
+ *       /health/detailed for compatibility purposes.
+ *     tags: [Public API]
+ *     responses:
+ *       200:
+ *         description: Health check completed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/HealthCheckResponse'
+ */
+app.get('/health/detailed', asyncHandler(async (req, res) => {
+    const health = await getDetailedHealth();
+    
+    // Always return 200 for health checks - let the consumer decide based on status
+    res.status(200).json(health);
+}));
+
+/**
+ * @swagger
  * /get-config:
  *   get:
  *     summary: Retrieve the public application configuration
